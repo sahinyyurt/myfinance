@@ -15,6 +15,24 @@ describe('Profile screen should render correctly', () => {
 		storage = new MMKV();
 	});
 
+	test('the users can see defaults values', () => {
+		let _user = { name: '', salary: 0 };
+		const component = (
+			<SafeAreaProvider>
+				<ThemeProvider storage={storage}>
+					<Profile onSetUser={user => (_user = user)} user={_user} />
+				</ThemeProvider>
+			</SafeAreaProvider>
+		);
+
+		render(component);
+
+		const nameInput = screen.getByTestId('name-input');
+		const salaryInput = screen.getByTestId('salary-input');
+		expect(nameInput).toHaveProp('value', '');
+		expect(salaryInput).toHaveProp('value', '0');
+	});
+
 	test('the users can save their detail', () => {
 		let _user = { name: 'Test', salary: 10000 };
 		const component = (

@@ -9,10 +9,10 @@ type Props = PropsWithChildren<{
 	onSetUser: (user: User) => void;
 }>;
 
-const Profile: FC<Props> = ({ user, onSetUser }) => {
+const Profile: FC<Props> = ({ user = { name: '', salary: 0 }, onSetUser }) => {
 	const { layout, gutters } = useTheme();
-	const [name, setName] = useState(user?.name || '');
-	const [salary, setSalary] = useState(String(user?.salary || '0'));
+	const [name, setName] = useState(user?.name);
+	const [salary, setSalary] = useState(String(user?.salary));
 	return (
 		<View style={[layout.flex_1, gutters.paddingHorizontal_12, gutters.gap_12]}>
 			<TextInputLabel

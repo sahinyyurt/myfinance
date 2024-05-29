@@ -1,11 +1,8 @@
-import { useState } from 'react';
 import { View, Text, ScrollView, Button } from 'react-native';
-import { useTranslation } from 'react-i18next';
 
 import { SafeScreen } from '@/components/template';
 import { useTheme } from '@/theme';
 
-import useTodoStore from '@/stores/useTodoStore';
 import { RootScreenProps } from '@/types/navigation';
 import { useFinanceStore } from '@/stores/useFinanceStore';
 
@@ -14,8 +11,8 @@ function Home({ navigation }: RootScreenProps<'Home'>) {
 
 	const { layout, gutters, colors, fonts } = useTheme();
 
-	const leftSalary = user
-		? user.salary - expences.reduce((sum, e) => sum + e.amount, 0)
+	const balance = user
+		? user.salary - expences.reduce((sum, e) => sum + e.amount + e.tax, 0)
 		: 0;
 	const tax = expences.reduce((sum, e) => sum + e.tax, 0);
 	return (
@@ -41,10 +38,10 @@ function Home({ navigation }: RootScreenProps<'Home'>) {
 					]}
 				>
 					<Text style={[fonts.gray800, fonts.size_32]}>
-						Balance: {leftSalary.toLocaleString()}
+						Balance: {balance.toLocaleString()}
 					</Text>
 					<Text style={[fonts.gray800, fonts.size_24]}>
-						Total tax:{tax.toLocaleString()}
+						Total tax: {tax.toLocaleString()}
 					</Text>
 					<Button title="Clear Expense" onPress={() => clearExpences()} />
 				</View>
@@ -74,11 +71,11 @@ function Home({ navigation }: RootScreenProps<'Home'>) {
 									layout.justifyBetween,
 								]}
 							>
+								<Text style={[fonts.gray800, fonts.size_16]}>{x.amount}</Text>
+								<Text style={[fonts.gray800, fonts.size_16]}>{x.tax}</Text>
 								<Text style={[fonts.gray800, fonts.size_16]}>
 									{x.amount + x.tax}
 								</Text>
-								<Text style={[fonts.gray800, fonts.size_16]}>{x.tax}</Text>
-								<Text style={[fonts.gray800, fonts.size_16]}>{x.amount}</Text>
 							</View>
 						))}
 					</View>
